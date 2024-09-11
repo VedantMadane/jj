@@ -1665,6 +1665,7 @@ impl GitRepoData {
                     settings,
                     store_path,
                     git_repo.path(),
+                    Some(&jj_repo_dir),
                 )?))
             },
             Signer::from_settings(&settings).unwrap(),
@@ -3319,6 +3320,7 @@ fn test_init() {
                 settings,
                 store_path,
                 git_repo.path(),
+                Some(&jj_repo_dir),
             )?))
         },
         Signer::from_settings(&settings).unwrap(),
@@ -4439,6 +4441,7 @@ fn set_up_push_repos(settings: &UserSettings, temp_dir: &TempDir) -> PushTestSet
                 settings,
                 store_path,
                 clone_repo.path(),
+                Some(&jj_repo_dir),
             )?))
         },
         Signer::from_settings(settings).unwrap(),
