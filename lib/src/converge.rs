@@ -611,6 +611,12 @@ async fn converge_trees(
     let parent_commits: Vec<Commit> =
         try_join_all(parents.iter().map(|id| repo.store().get_commit_async(id))).await?;
     let parents_merged_tree = merge_commit_trees_no_resolve(repo.as_ref(), &parent_commits).await?;
+
+    // TODO: for now we are using the evolution fork point as the base of the merge when converging trees. We
+    // should instead use the dominator value algorithm, more specifically, we should find the dominator
+    // value of the trees (of the divergent commits); that tree will come from one or more commits in the
+    // evolution graph. We should use one of those commits as the base of the merge.
+
     let base_commit = truncated_evolution_graph.get_evolution_fork_point()?;
     let base_commit_tree_labels = format!("evolution fork point: {}", base_commit.conflict_label());
     let base_commit_parent_tree = base_commit.parent_tree_no_resolve(repo.as_ref()).await?;
