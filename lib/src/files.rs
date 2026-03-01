@@ -15,6 +15,7 @@
 #![expect(missing_docs)]
 
 use std::borrow::Borrow;
+use std::borrow::Cow;
 use std::collections::VecDeque;
 use std::iter;
 use std::mem;
@@ -346,34 +347,41 @@ fn merge_hunk_by_word(inputs: Merge<&BStr>, same_change: SameChange) -> MergeHun
 
 /// `Cow`-like type over `Merge<T>`.
 #[derive(Clone, Debug)]
-enum MergeHunk<'input> {
+pub enum MergeHunk<'input> {
     Borrowed(Merge<&'input BStr>),
     Owned(Merge<BString>),
 }
 
-impl MergeHunk<'_> {
-    fn len(&self) -> usize {
+impl<'a> MergeHunk<'a> {
+    pub fn resolved(hunk: Cow<'a, BStr>) -> Self {
+        match hunk {
+            Cow::Borrowed(hunk) => Self::Borrowed(Merge::resolved(hunk)),
+            Cow::Owned(hunk) => Self::Owned(Merge::resolved(hunk)),
+        }
+    }
+
+    pub fn len(&self) -> usize {
         match self {
             MergeHunk::Borrowed(merge) => merge.as_slice().len(),
             MergeHunk::Owned(merge) => merge.as_slice().len(),
         }
     }
 
-    fn iter(&self) -> impl Iterator<Item = &BStr> {
+    pub fn iter(&self) -> impl Iterator<Item = &BStr> {
         match self {
             MergeHunk::Borrowed(merge) => Either::Left(merge.iter().copied()),
             MergeHunk::Owned(merge) => Either::Right(merge.iter().map(Borrow::borrow)),
         }
     }
 
-    fn as_resolved(&self) -> Option<&BStr> {
+    pub fn as_resolved(&self) -> Option<&BStr> {
         match self {
             MergeHunk::Borrowed(merge) => merge.as_resolved().copied(),
             MergeHunk::Owned(merge) => merge.as_resolved().map(Borrow::borrow),
         }
     }
 
-    fn into_owned(self) -> Merge<BString> {
+    pub fn into_owned(self) -> Merge<BString> {
         match self {
             MergeHunk::Borrowed(merge) => merge.map(|&s| s.to_owned()),
             MergeHunk::Owned(merge) => merge,
@@ -382,7 +390,7 @@ impl MergeHunk<'_> {
 }
 
 /// `FromIterator` for merge result.
-trait FromMergeHunks<'input>: Sized {
+pub trait FromMergeHunks<'input>: Sized {
     fn from_hunks<I: IntoIterator<Item = MergeHunk<'input>>>(hunks: I) -> Self;
 }
 
