@@ -325,6 +325,12 @@ impl<T> Merge<T> {
         self.values.get(index * 2)
     }
 
+    /// Returns the `index`-th value in the alternating order used by
+    /// [`Self::iter`] and [`Self::as_slice`].
+    pub fn get(&self, index: usize) -> Option<&T> {
+        self.values.get(index)
+    }
+
     /// Removes the specified "removed"/"added" values. The removed slots are
     /// replaced by the last "removed"/"added" values.
     pub fn swap_remove(&mut self, remove_index: usize, add_index: usize) -> (T, T) {
