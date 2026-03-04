@@ -2164,6 +2164,8 @@ fn test_copy_diffstream_rename() {
         collect_diffs(&left, &right),
         [
             expected_rename(foo, &foo_val, bar, &bar_val),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &foo_val),
         ],
     );
@@ -2172,6 +2174,8 @@ fn test_copy_diffstream_rename() {
     assert_eq!(
         collect_diffs(&right, &left),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &bar_val),
             expected_rename(bar, &bar_val, foo, &foo_val),
         ],
@@ -2320,6 +2324,8 @@ fn test_copy_diffstream_distinct_histories() {
     assert_eq!(
         collect_diffs(&left, &right),
         [
+            // TODO: these deletion/creation entries should eventually be replaced with a single
+            // "normal" entry; see TODO[deletion-diff-entry] in copies.rs
             expected_deletion(foo, &foo_val1),
             expected_creation(foo, &foo_val2),
         ],
@@ -2533,6 +2539,8 @@ fn test_copy_diffstream_multiple_descendants() {
         collect_diffs(&left, &right),
         [
             expected_rename(gru, &gru_val, bar, &bar_val),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(gru, &gru_val),
             expected_rename(gru, &gru_val, qux, &qux_val),
         ],
@@ -2542,6 +2550,8 @@ fn test_copy_diffstream_multiple_descendants() {
     assert_eq!(
         collect_diffs(&right, &left),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &bar_val),
             expected_rename(bar, &bar_val, gru, &gru_val),
             expected_deletion(qux, &qux_val),
@@ -2589,6 +2599,8 @@ fn test_copy_diffstream_same_path_parent() {
     assert_eq!(
         collect_diffs(&left, &right),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &old_foo_val),
             expected_normal(foo, &old_foo_val, &new_foo_val),
         ],
@@ -2597,6 +2609,8 @@ fn test_copy_diffstream_same_path_parent() {
     assert_eq!(
         collect_diffs(&right, &left),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &new_foo_val),
             expected_normal(foo, &new_foo_val, &old_foo_val),
         ],
@@ -2664,6 +2678,8 @@ fn test_copy_diffstream_merge_oneway() {
     assert_eq!(
         collect_diffs(&left, &right),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &old_bar_val),
             (
                 bar.to_owned(),
@@ -2681,6 +2697,8 @@ fn test_copy_diffstream_merge_oneway() {
     assert_eq!(
         collect_diffs(&right, &left),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &new_bar_val),
             expected_normal(bar, &new_bar_val, &old_bar_val),
         ],
@@ -2695,6 +2713,8 @@ fn test_copy_diffstream_merge_oneway() {
     assert_eq!(
         collect_diffs(&left, &right_no_foo),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &old_bar_val),
             (
                 bar.to_owned(),
@@ -2706,6 +2726,8 @@ fn test_copy_diffstream_merge_oneway() {
                     ],
                 }),
             ),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &foo_val),
         ],
     );
@@ -2713,6 +2735,8 @@ fn test_copy_diffstream_merge_oneway() {
     assert_eq!(
         collect_diffs(&right_no_foo, &left),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &new_bar_val),
             expected_normal(bar, &new_bar_val, &old_bar_val),
             expected_copy(bar, &new_bar_val, foo, &foo_val),
@@ -2797,6 +2821,8 @@ fn test_copy_diffstream_merge_twoway() {
     assert_eq!(
         collect_diffs(&left, &right),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &old_bar_val),
             (
                 bar.to_owned(),
@@ -2808,6 +2834,8 @@ fn test_copy_diffstream_merge_twoway() {
                     ],
                 }),
             ),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &old_foo_val),
             (
                 foo.to_owned(),
@@ -2908,6 +2936,8 @@ fn test_copy_diffstream_rename_overwrite() {
         [
             expected_deletion(bar, &old_bar_val),
             expected_rename(foo, &foo_val, bar, &new_bar_val),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &foo_val),
         ],
     );
@@ -2915,6 +2945,8 @@ fn test_copy_diffstream_rename_overwrite() {
     assert_eq!(
         collect_diffs(&right, &left),
         [
+            // TODO: these deletion/creation entries should eventually be replaced with a single
+            // "normal" entry; see TODO[deletion-diff-entry] in copies.rs
             expected_deletion(bar, &new_bar_val),
             expected_creation(bar, &old_bar_val),
             expected_rename(bar, &new_bar_val, foo, &foo_val),
@@ -2947,6 +2979,8 @@ fn test_copy_diffstream_rename_overwrite() {
         collect_diffs(&left, &right2),
         [
             expected_deletion(bar, &old_bar_val),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &foo_val),
             expected_normal(foo, &foo_val, &final_foo_val),
         ],
@@ -2956,6 +2990,8 @@ fn test_copy_diffstream_rename_overwrite() {
         collect_diffs(&right2, &left),
         [
             expected_creation(bar, &old_bar_val),
+            // TODO: these deletion/creation entries should eventually be replaced with a single
+            // "normal" entry; see TODO[deletion-diff-entry] in copies.rs
             expected_deletion(foo, &final_foo_val),
             expected_normal(foo, &final_foo_val, &foo_val),
         ],
@@ -3038,8 +3074,12 @@ fn test_copy_diffstream_double_rename() {
     assert_eq!(
         collect_diffs(&left, &right),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &old_bar_val),
             expected_rename(foo, &old_foo_val, bar, &new_bar_val),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &old_foo_val),
             expected_rename(bar, &old_bar_val, foo, &new_foo_val),
         ],
@@ -3048,8 +3088,12 @@ fn test_copy_diffstream_double_rename() {
     assert_eq!(
         collect_diffs(&right, &left),
         [
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(bar, &new_bar_val),
             expected_rename(foo, &new_foo_val, bar, &old_bar_val),
+            // TODO: this deletion should disappear eventually; see TODO[deletion-diff-entry] in
+            // copies.rs
             expected_deletion(foo, &new_foo_val),
             expected_rename(bar, &new_bar_val, foo, &old_foo_val),
         ],

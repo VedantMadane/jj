@@ -461,10 +461,11 @@ impl Stream for CopyHistoryDiffStream<'_> {
                         // For files with non-matching copy-ids, or for a non-file that changes to a
                         // file, mark the first as deleted and do copy-tracing on the second.
                         //
-                        // TODO: this may emit two diff entries, where the old diffstream would
-                        // contain only one. We could block on the result of the copy-tracing
-                        // future, and then only split the diff entry if a copy ancestor was found,
-                        // but for now let's keep things simple and always split the entry.
+                        // TODO[deletion-diff-entry]: this may emit two diff entries, where the old
+                        // diffstream would contain only one. We could block on the result of the
+                        // copy-tracing future, and then only split the diff entry if a copy
+                        // ancestor was found, but for now let's keep things simple and always split
+                        // the entry.
                         self.pending
                             .push_back(Box::pin(ready(CopyHistoryTreeDiffEntry {
                                 target_path: next_diff_entry.path.clone(),
