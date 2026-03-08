@@ -52,7 +52,7 @@ pub struct SignArgs {
     ///
     /// [#5786]:
     ///     https://github.com/jj-vcs/jj/issues/5786
-    #[arg(long, short, value_name = "REVSETS")]
+    #[arg(long, short, value_name = "REVSETS", alias = "revision")]
     #[arg(add = ArgValueCompleter::new(complete::revset_expression_mutable))]
     revisions: Vec<RevisionArg>,
 

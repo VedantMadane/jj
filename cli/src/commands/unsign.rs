@@ -37,7 +37,7 @@ use crate::ui::Ui;
 #[derive(clap::Args, Clone, Debug)]
 pub struct UnsignArgs {
     /// What revision(s) to unsign
-    #[arg(long, short, value_name = "REVSETS")]
+    #[arg(long, short, value_name = "REVSETS", alias = "revision")]
     #[arg(add = ArgValueCompleter::new(complete::revset_expression_mutable))]
     revisions: Vec<RevisionArg>,
 }

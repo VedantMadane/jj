@@ -296,7 +296,7 @@ pub(crate) struct RebaseArgs {
     /// descendant of `A`.
     ///
     /// If none of `-b`, `-s`, or `-r` is provided, then the default is `-b @`.
-    #[arg(long, short, value_name = "REVSETS")]
+    #[arg(long, short, value_name = "REVSETS", alias = "revision")]
     #[arg(add = ArgValueCompleter::new(complete::revset_expression_mutable))]
     revisions: Vec<RevisionArg>,
 
